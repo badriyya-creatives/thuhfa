@@ -500,14 +500,12 @@
 
           const file = new File([blob], "poster.png", { type: "image/png" });
           const targetPhone = "919946667559";
-          const shareText = document.getElementById('input1').value.trim() || "Badriyya Thuhfa Poster";
 
-          // Try native Web Share API with image file
+          // Try native Web Share API with image file only (no extra text/names below)
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
             try {
               await navigator.share({
                 title: 'Badriyya Thuhfa',
-                text: shareText,
                 files: [file]
               });
               showStatus("Shared successfully! ✅");
@@ -517,8 +515,8 @@
             }
           }
 
-          // Direct WhatsApp Fallback
-          window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(shareText)}`, '_blank');
+          // Direct WhatsApp Fallback to +91 9946667559 (without caption text)
+          window.open(`https://wa.me/${targetPhone}`, '_blank');
           showStatus("Opened WhatsApp! ✅");
         }, "image/png");
 
