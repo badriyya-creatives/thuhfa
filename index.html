@@ -404,27 +404,27 @@
       setTimeout(fitPosterPreview, 50);
     }
 
-    async function downloadPoster() {
+    async function capturePosterCanvas() {
       const wrapper = document.getElementById("posterScalePreview");
       const previewWrapper = document.getElementById("posterPreviewWrapper");
+      const posterEl = document.getElementById("poster");
+
+      // Save original styles
       const originalTransform = wrapper.style.transform;
       const originalWrapperHeight = previewWrapper.style.height;
 
-      setDownloadProgress(true, "Preparing...");
-
       try {
-        if (document.fonts) {
-          setDownloadProgress(true, "Loading fonts...");
-          await document.fonts.ready;
-        }
-
-        setDownloadProgress(true, "Rendering...");
-
+        // Temporarily unclip wrapper so mobile viewport width doesn't force text wrapping
+        previewWrapper.style.overflow = "visible";
         wrapper.style.transform = "scale(1)";
         wrapper.style.transformOrigin = "top left";
-
-        const posterEl = document.getElementById("poster");
         previewWrapper.style.height = `${posterEl.offsetHeight}px`;
+
+        // Ensure Malayalam fonts & layout reflow at 2700px width before html2canvas
+        if (document.fonts) {
+          await document.fonts.ready;
+        }
+        await new Promise(resolve => setTimeout(resolve, 120));
 
         window.scrollTo(0, 0);
 
@@ -432,17 +432,29 @@
           scale: 2,
           useCORS: true,
           backgroundColor: null,
-          width: posterEl.offsetWidth,
+          width: 2700,
           height: posterEl.offsetHeight,
           windowWidth: 2700,
           scrollX: 0,
           scrollY: 0
         });
 
+        return canvas;
+      } finally {
+        // Always restore mobile preview scale
         wrapper.style.transform = originalTransform;
         previewWrapper.style.height = originalWrapperHeight;
+        previewWrapper.style.overflow = "hidden";
         fitPosterPreview();
+      }
+    }
 
+    async function downloadPoster() {
+      setDownloadProgress(true, "Preparing...");
+
+      try {
+        setDownloadProgress(true, "Rendering...");
+        const canvas = await capturePosterCanvas();
         setDownloadProgress(true, "Downloading...");
 
         canvas.toBlob((blob) => {
@@ -465,10 +477,6 @@
         }, "image/png");
 
       } catch (err) {
-        wrapper.style.transform = originalTransform;
-        previewWrapper.style.height = originalWrapperHeight;
-        fitPosterPreview();
-
         setDownloadProgress(false);
         console.error("Download error:", err);
         showStatus("Download failed!", true);
@@ -476,43 +484,11 @@
     }
 
     async function sharePoster() {
-      const wrapper = document.getElementById("posterScalePreview");
-      const previewWrapper = document.getElementById("posterPreviewWrapper");
-      const originalTransform = wrapper.style.transform;
-      const originalWrapperHeight = previewWrapper.style.height;
-
       setShareProgress(true, "Preparing...");
 
       try {
-        if (document.fonts) {
-          setShareProgress(true, "Loading fonts...");
-          await document.fonts.ready;
-        }
-
         setShareProgress(true, "Rendering...");
-
-        wrapper.style.transform = "scale(1)";
-        wrapper.style.transformOrigin = "top left";
-
-        const posterEl = document.getElementById("poster");
-        previewWrapper.style.height = `${posterEl.offsetHeight}px`;
-        window.scrollTo(0, 0);
-
-        const canvas = await html2canvas(posterEl, {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: null,
-          width: posterEl.offsetWidth,
-          height: posterEl.offsetHeight,
-          windowWidth: 2700,
-          scrollX: 0,
-          scrollY: 0
-        });
-
-        wrapper.style.transform = originalTransform;
-        previewWrapper.style.height = originalWrapperHeight;
-        fitPosterPreview();
-
+        const canvas = await capturePosterCanvas();
         setShareProgress(true, "Sharing...");
 
         canvas.toBlob(async (blob) => {
@@ -526,7 +502,7 @@
           const targetPhone = "919946667559";
           const shareText = document.getElementById('input1').value.trim() || "Badriyya Thuhfa Poster";
 
-          // Try native Web Share API with image file (supported on Android Chrome and iOS Safari)
+          // Try native Web Share API with image file
           if (navigator.canShare && navigator.canShare({ files: [file] })) {
             try {
               await navigator.share({
@@ -547,9 +523,6 @@
         }, "image/png");
 
       } catch (err) {
-        wrapper.style.transform = originalTransform;
-        previewWrapper.style.height = originalWrapperHeight;
-        fitPosterPreview();
         setShareProgress(false);
         console.error("Share error:", err);
         showStatus("Share failed!", true);
