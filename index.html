@@ -498,24 +498,9 @@
             return;
           }
 
-          const file = new File([blob], "poster.png", { type: "image/png" });
           const targetPhone = "919946667559";
 
-          // Try native Web Share API with image file only (no extra text/names below)
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            try {
-              await navigator.share({
-                title: 'Badriyya Thuhfa',
-                files: [file]
-              });
-              showStatus("Shared successfully! ✅");
-              return;
-            } catch (err) {
-              if (err.name === 'AbortError') return;
-            }
-          }
-
-          // Direct WhatsApp App Launch Protocol (opens WhatsApp app directly on mobile)
+          // Bypass phone share selection menu and launch WhatsApp App directly
           window.location.href = `whatsapp://send?phone=${targetPhone}`;
           showStatus("Opened WhatsApp! ✅");
         }, "image/png");
