@@ -91,84 +91,133 @@
     }
   </style>
 </head>
-<body class="p-4">
+<<body class="bg-gray-100 min-h-screen p-3 md:p-6 text-gray-800">
 
-  <!-- Status Messages -->
-  <div id="statusMessage" class="status-message"></div>
+  <div class="max-w-7xl mx-auto space-y-4">
+    <!-- Status Messages -->
+    <div id="statusMessage" class="status-message transition-all duration-300 shadow-md"></div>
 
-  <!-- Hijri Month & Day Selector -->
-  <div class="mb-4 flex flex-wrap gap-4">
-    <div>
-      <label class="block font-semibold mb-1">മാസം:</label>
-      <select id="monthSelect" class="p-2 border border-gray-400 rounded">
-        <option disabled selected>മാസം തിരഞ്ഞെടുക്കുക</option>
-      </select>
-    </div>
-    <div>
-      <label class="block font-semibold mb-1">ദിവസം:</label>
-      <select id="daySelect" class="p-2 border border-gray-400 rounded">
-        <option disabled selected>ദിവസം തിരഞ്ഞെടുക്കുക</option>
-        <option value="1">01</option>
-        <option value="2">02</option>
-        <option value="3">03</option>
-        <option value="4">04</option>
-        <option value="5">05</option>
-        <option value="6">06</option>
-        <option value="7">07</option>
-        <option value="8">08</option>
-        <option value="9">09</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-        <option value="13">13</option>
-        <option value="14">14</option>
-        <option value="15">15</option>
-        <option value="16">16</option>
-        <option value="17">17</option>
-        <option value="18">18</option>
-        <option value="19">19</option>
-        <option value="20">20</option>
-        <option value="21">21</option>
-        <option value="22">22</option>
-        <option value="23">23</option>
-        <option value="24">24</option>
-        <option value="25">25</option>
-        <option value="26">26</option>
-        <option value="27">27</option>
-        <option value="28">28</option>
-        <option value="29">29</option>
-        <option value="30">30</option>
-      </select>
-    </div>
-  </div>
+    <!-- Main Controls Card -->
+    <div class="bg-white rounded-xl shadow-md p-4 md:p-6 border border-gray-200">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+        </svg>
+        പോസ്റ്റർ എഡിറ്റർ
+      </h2>
 
-  <!-- Input Fields -->
-  <textarea id="input1" rows="6" placeholder="Enter Title 1 Content" class="w-full p-2 border border-gray-400 rounded mb-2"></textarea>
-  <textarea id="input2" rows="6" placeholder="Enter Title 2 Content" class="w-full p-2 border border-gray-400 rounded mb-2"></textarea>
-  <textarea id="input3" rows="2" readonly class="w-full p-2 border border-gray-400 rounded mb-2"></textarea>
-
-  <div class="mt-4 flex gap-4">
-    <button onclick="downloadPoster()" class="bg-green-600 text-white px-4 py-2 rounded">Download</button>
-    <button id="saveBtn" onclick="saveData()" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
-    <button onclick="deleteData()" class="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
-  </div>
-
-  <!-- Poster Preview -->
-  <div id="posterPreviewWrapper" class="overflow-auto border border-gray-400 p-2 mt-4">
-    <div id="posterScalePreview" class="scale-[0.3] origin-top-left">
-      <div id="poster" class="relative w-[2700px] text-black" style="background: url('bg.png') no-repeat center; background-size: cover;">
-        <img src="header.png" class="w-full" />
-        <div class="relative">
-          <img src="datebox.png" class="w-full" />
-          <div id="dateText"></div>
+      <!-- Hijri Month & Day Selector -->
+      <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1.5 text-sm">മാസം:</label>
+          <select id="monthSelect" class="w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all cursor-pointer">
+            <option disabled selected>മാസം തിരഞ്ഞെടുക്കുക</option>
+          </select>
         </div>
-        <img src="title1.png" class="w-full" />
-        <div id="text1" class="poster-text"></div>
-        <div id="title2Section">
-          <img id="title2Image" src="title2.png" class="w-full" />
-          <div id="text2" class="poster-text"></div>
+        <div>
+          <label class="block font-semibold text-gray-700 mb-1.5 text-sm">ദിവസം:</label>
+          <select id="daySelect" class="w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all cursor-pointer">
+            <option disabled selected>ദിവസം തിരഞ്ഞെടുക്കുക</option>
+            <option value="1">01</option>
+            <option value="2">02</option>
+            <option value="3">03</option>
+            <option value="4">04</option>
+            <option value="5">05</option>
+            <option value="6">06</option>
+            <option value="7">07</option>
+            <option value="8">08</option>
+            <option value="9">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+          </select>
         </div>
-        <img src="footer.png" class="w-full" />
+      </div>
+
+      <!-- Input Fields -->
+      <div class="space-y-3 mb-5">
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">Title 1 Content</label>
+          <textarea id="input1" rows="5" placeholder="Enter Title 1 Content" class="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all font-sans"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">Title 2 Content</label>
+          <textarea id="input2" rows="5" placeholder="Enter Title 2 Content" class="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all font-sans"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-gray-600 mb-1">Generated Date String</label>
+          <textarea id="input3" rows="2" readonly class="w-full p-3 bg-gray-100 border border-gray-300 text-gray-700 rounded-lg cursor-not-allowed font-semibold"></textarea>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex flex-wrap items-center gap-3 pt-2 border-t border-gray-100">
+        <button id="downloadBtn" onclick="downloadPoster()" class="flex-1 min-w-[160px] inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-medium px-5 py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 disabled:opacity-75 disabled:cursor-wait">
+          <svg id="downloadIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          <svg id="downloadSpinner" class="hidden animate-spin w-5 h-5 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span id="downloadBtnText">Download</span>
+        </button>
+
+        <button id="saveBtn" onclick="saveData()" class="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-medium px-5 py-2.5 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 disabled:opacity-75 disabled:cursor-not-allowed">
+          <svg id="saveIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+          </svg>
+          <svg id="saveSpinner" class="hidden animate-spin w-5 h-5 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span id="saveBtnText">Save</span>
+        </button>
+
+        <button id="deleteBtn" onclick="deleteData()" class="inline-flex items-center justify-center gap-2 bg-rose-50 hover:bg-rose-100 text-rose-600 font-medium px-4 py-2.5 rounded-lg border border-rose-200 transition-all duration-200 active:scale-95">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+          <span>Delete</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Poster Preview -->
+    <div id="posterPreviewWrapper" class="overflow-auto border border-gray-300 rounded-xl bg-gray-200 p-2 shadow-inner">
+      <div id="posterScalePreview" class="scale-[0.3] origin-top-left">
+        <div id="poster" class="relative w-[2700px] text-black" style="background: url('bg.png') no-repeat center; background-size: cover;">
+          <img src="header.png" class="w-full" />
+          <div class="relative">
+            <img src="datebox.png" class="w-full" />
+            <div id="dateText"></div>
+          </div>
+          <img src="title1.png" class="w-full" />
+          <div id="text1" class="poster-text"></div>
+          <div id="title2Section">
+            <img id="title2Image" src="title2.png" class="w-full" />
+            <div id="text2" class="poster-text"></div>
+          </div>
+          <img src="footer.png" class="w-full" />
+        </div>
       </div>
     </div>
   </div>
@@ -176,7 +225,7 @@
   <script>
     // Supabase configuration
     const SUPABASE_URL = 'https://jnuyzhmeebaeeckkaobb.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpudXl6aG1lZWJhZWVja2thb2JiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzNjkzNDUsImV4cCI6MjA2ODk0NTM0NX0.0dDorsXVM64DLrToS_NBEb6UaPO6AXNZvgXLdoacaa0';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpudXl6aM1lZWJhZWVja2thb2JiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzNjkzNDUsImV4cCI6MjA2ODk0NTM0NX0.0dDorsXVM64DLrToS_NBEb6UaPO6AXNZvgXLdoacaa0';
     
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -189,6 +238,13 @@
     const daySelect = document.getElementById("daySelect");
     const statusMessage = document.getElementById("statusMessage");
     const saveBtn = document.getElementById("saveBtn");
+    const saveBtnText = document.getElementById("saveBtnText");
+    const saveIcon = document.getElementById("saveIcon");
+    const saveSpinner = document.getElementById("saveSpinner");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const downloadBtnText = document.getElementById("downloadBtnText");
+    const downloadIcon = document.getElementById("downloadIcon");
+    const downloadSpinner = document.getElementById("downloadSpinner");
 
     // Populate month dropdown
     hijriMonths.forEach(month => {
@@ -210,7 +266,28 @@
     function setLoading(loading) {
       document.body.className = loading ? 'loading' : '';
       saveBtn.disabled = loading;
-      saveBtn.textContent = loading ? 'Saving...' : 'Save';
+      if (loading) {
+        saveIcon.classList.add('hidden');
+        saveSpinner.classList.remove('hidden');
+        saveBtnText.textContent = 'സേവ് ചെയ്യുന്നു...';
+      } else {
+        saveIcon.classList.remove('hidden');
+        saveSpinner.classList.add('hidden');
+        saveBtnText.textContent = 'Save';
+      }
+    }
+
+    function setDownloadProgress(isDownloading, progressText = "Download") {
+      downloadBtn.disabled = isDownloading;
+      if (isDownloading) {
+        downloadIcon.classList.add('hidden');
+        downloadSpinner.classList.remove('hidden');
+        downloadBtnText.textContent = progressText;
+      } else {
+        downloadIcon.classList.remove('hidden');
+        downloadSpinner.classList.add('hidden');
+        downloadBtnText.textContent = 'Download';
+      }
     }
 
     function generateBulletText(input) {
@@ -241,34 +318,46 @@
       const wrapper = document.getElementById("posterScalePreview");
       const originalTransform = wrapper.style.transform;
 
-      // Ensure Malayalam fonts are loaded before canvas rendering
-      if (document.fonts) {
-        await document.fonts.ready;
-      }
+      setDownloadProgress(true, "തയ്യാറാകുന്നു...");
 
-      wrapper.style.transform = "scale(1)";
-      wrapper.style.transformOrigin = "top left";
+      try {
+        // Step 1: Font Check
+        if (document.fonts) {
+          setDownloadProgress(true, "ഫോണ്ട് ലോഡ് ചെയ്യുന്നു...");
+          await document.fonts.ready;
+        }
 
-      const posterEl = document.getElementById("poster");
+        setDownloadProgress(true, "പോസ്റ്റർ ഇമേജ് തയ്യാറാക്കുന്നു...");
 
-      // Scroll to top left to prevent offset issues on mobile
-      window.scrollTo(0, 0);
+        wrapper.style.transform = "scale(1)";
+        wrapper.style.transformOrigin = "top left";
 
-      html2canvas(posterEl, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: null,
-        width: posterEl.offsetWidth,
-        height: posterEl.offsetHeight,
-        windowWidth: 2700,
-        scrollX: 0,
-        scrollY: 0
-      }).then(canvas => {
+        const posterEl = document.getElementById("poster");
+
+        // Scroll to top left to prevent offset issues on mobile
+        window.scrollTo(0, 0);
+
+        const canvas = await html2canvas(posterEl, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: null,
+          width: posterEl.offsetWidth,
+          height: posterEl.offsetHeight,
+          windowWidth: 2700,
+          scrollX: 0,
+          scrollY: 0
+        });
+
         wrapper.style.transform = originalTransform;
-        
+        setDownloadProgress(true, "ഡൗൺലോഡ് ചെയ്യുന്നു...");
+
         // Use Blob for better mobile browser download compatibility
         canvas.toBlob((blob) => {
-          if (!blob) return;
+          if (!blob) {
+            setDownloadProgress(false);
+            showStatus("ഇമേജ് സൃഷ്‌ടിക്കുന്നതിൽ പിശക്!", true);
+            return;
+          }
           const url = URL.createObjectURL(blob);
           const link = document.createElement("a");
           link.download = "poster.png";
@@ -277,11 +366,17 @@
           link.click();
           document.body.removeChild(link);
           setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+          setDownloadProgress(false);
+          showStatus("ഡൗൺലോഡ് വിജയിച്ചു! ✅");
         }, "image/png");
-      }).catch(err => {
+
+      } catch (err) {
         wrapper.style.transform = originalTransform;
+        setDownloadProgress(false);
         console.error("Download error:", err);
-      });
+        showStatus("ഡൗൺലോഡ് ചെയ്യുന്നതിൽ പിശക് സംഭവിച്ചു!", true);
+      }
     }
 
     async function saveData() {
