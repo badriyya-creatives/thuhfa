@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Poster Creator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arima:wght@100..700&family=Noto+Sans+Malayalam:wght@100..900&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      font-family: 'Arima', sans-serif;
+      background-color: #f0f0f0;
+    }
+    .poster-text {
+      font-size: 4rem;
+      line-height: 1.5;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      max-width: 2100px;
+      margin: 0 auto;
+      text-align: start;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+    .poster-bullet {
+      display: flex;
+      align-items: flex-start;
+      padding-left: 4rem;
+      position: relative;
+    }
+
+    .poster-bullet::before {
+      content: '';
+      position: absolute;
+      top: 70px;
+      left: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      background-image: url('bullet.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    #dateText {
+      font-family: 'Noto Sans Malayalam', sans-serif;
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-size: 5.5rem;
+      font-weight: 500;
+      color: white;
+      white-space: nowrap;
+      max-width: 2600px;
+      overflow: visible;
+      text-overflow: ellipsis;
+    }
+    #title2Section {
+      margin-top: 3rem;
+    }
+    textarea {
+      font-family: 'Arima', sans-serif;
+    }
+    .loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    .status-message {
+      padding: 8px 16px;
+      border-radius: 4px;
+      margin: 8px 0;
+      display: none;
+    }
+    .status-success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .status-error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  </style>
+</head>
+<body class="p-4">
+
+  <!-- Status Messages -->
+  <div id="statusMessage" class="status-message"></div>
+
+  <!-- Hijri Month & Day Selector -->
+  <div class="mb-4 flex flex-wrap gap-4">
+    <div>
+      <label class="block font-semibold mb-1">മാസം:</label>
+      <select id="monthSelect" class="p-2 border border-gray-400 rounded">
+        <option disabled selected>മാസം തിരഞ്ഞെടുക്കുക</option>
+      </select>
+    </div>
+    <div>
+      <label class="block font-semibold mb-1">ദിവസം:</label>
+      <select id="daySelect" class="p-2 border border-gray-400 rounded">
+        <option disabled selected>ദിവസം തിരഞ്ഞെടുക്കുക</option>
+        <option value="1">01</option>
+        <option value="2">02</option>
+        <option value="3">03</option>
+        <option value="4">04</option>
+        <option value="5">05</option>
+        <option value="6">06</option>
+        <option value="7">07</option>
+        <option value="8">08</option>
+        <option value="9">09</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25">25</option>
+        <option value="26">26</option>
+        <option value="27">27</option>
+        <option value="28">28</option>
+        <option value="29">29</option>
+        <option value="30">30</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Input Fields -->
+  <textarea id="input1" rows="6" placeholder="Enter Title 1 Content" class="w-full p-2 border border-gray-400 rounded mb-2"></textarea>
+  <textarea id="input2" rows="6" placeholder="Enter Title 2 Content" class="w-full p-2 border border-gray-400 rounded mb-2"></textarea>
+  <textarea id="input3" rows="2" readonly class="w-full p-2 border border-gray-400 rounded mb-2"></textarea>
+
+  <div class="mt-4 flex gap-4">
+    <button onclick="downloadPoster()" class="bg-green-600 text-white px-4 py-2 rounded">Download</button>
+    <button id="saveBtn" onclick="saveData()" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
+    <button onclick="deleteData()" class="bg-red-600 text-white px-4 py-2 rounded">Delete</button>
+  </div>
+
+  <!-- Poster Preview -->
+  <div id="posterPreviewWrapper" class="overflow-auto border border-gray-400 p-2 mt-4">
+    <div id="posterScalePreview" class="scale-[0.3] origin-top-left">
+      <div id="poster" class="relative w-[2700px] text-black" style="background: url('bg.png') no-repeat center; background-size: cover;">
+        <img src="header.png" class="w-full" />
+        <div class="relative">
+          <img src="datebox.png" class="w-full" />
+          <div id="dateText"></div>
+        </div>
+        <img src="title1.png" class="w-full" />
+        <div id="text1" class="poster-text"></div>
+        <div id="title2Section">
+          <img id="title2Image" src="title2.png" class="w-full" />
+          <div id="text2" class="poster-text"></div>
+        </div>
+        <img src="footer.png" class="w-full" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Supabase configuration
+    const SUPABASE_URL = 'https://jnuyzhmeebaeeckkaobb.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpudXl6aG1lZWJhZWVja2thb2JiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzNjkzNDUsImV4cCI6MjA2ODk0NTM0NX0.0dDorsXVM64DLrToS_NBEb6UaPO6AXNZvgXLdoacaa0';
+    
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const hijriMonths = ["മുഹറം", "സഫർ", "റ:അവ്വല്‍", "റ:ആഖര്‍", "ജ:അവ്വല്‍", "ജ:ആഖര്‍", "റജബ്", "ശഅ്ബാന്‍", "റമളാന്‍", "ശവ്വാല്‍", "ദുല്‍ ഖഅദ്", "ദുല്‍ ഹജ്‌ജ"];
+    const malayalamDays = ['ഞായര്‍', 'തിങ്കള്‍', 'ചൊവ്വ', 'ബുധന്‍', 'വ്യാഴം', 'വെള്ളി', 'ശനി'];
+    const malayalamMonths = ['ജനുവരി', 'ഫെബ്രുവരി', 'മാര്‍ച്ച്', 'ഏപ്രില്‍', 'മേയ്', 'ജൂണ്‍', 'ജൂലൈ', 'ആഗസ്റ്റ്', 'സെപ്റ്റംബര്‍', 'ഒക്ടോബര്‍', 'നവംബര്‍', 'ഡിസംബര്‍'];
+
+    const monthSelect = document.getElementById("monthSelect");
+    const daySelect = document.getElementById("daySelect");
+    const statusMessage = document.getElementById("statusMessage");
+    const saveBtn = document.getElementById("saveBtn");
+
+    // Populate month dropdown
+    hijriMonths.forEach(month => {
+      const option = document.createElement("option");
+      option.value = month;
+      option.textContent = month;
+      monthSelect.appendChild(option);
+    });
+
+    function showStatus(message, isError = false) {
+      statusMessage.textContent = message;
+      statusMessage.className = `status-message ${isError ? 'status-error' : 'status-success'}`;
+      statusMessage.style.display = 'block';
+      setTimeout(() => {
+        statusMessage.style.display = 'none';
+      }, 3000);
+    }
+
+    function setLoading(loading) {
+      document.body.className = loading ? 'loading' : '';
+      saveBtn.disabled = loading;
+      saveBtn.textContent = loading ? 'Saving...' : 'Save';
+    }
+
+    function generateBulletText(input) {
+      return input.split('\n').map(line => line.trim() ? `<div class="poster-bullet">${line}</div>` : '').join('');
+    }
+
+    function generatePoster() {
+      const input1Value = document.getElementById('input1').value;
+      const input2Value = document.getElementById('input2').value;
+      const title2Section = document.getElementById('title2Section');
+      
+      // Update text content
+      document.getElementById('text1').innerHTML = generateBulletText(input1Value);
+      document.getElementById('text2').innerHTML = generateBulletText(input2Value);
+      document.getElementById('dateText').innerText = document.getElementById('input3').value;
+      
+      // Show/hide Title 2 section based on input2 content
+      if (input2Value.trim() === '') {
+        title2Section.style.display = 'none';
+      } else {
+        title2Section.style.display = 'block';
+      }
+      
+      document.getElementById('posterScalePreview').style.transform = "scale(0.3)";
+    }
+
+    function downloadPoster() {
+      const wrapper = document.getElementById("posterScalePreview");
+      const originalTransform = wrapper.style.transform;
+      wrapper.style.transform = "scale(1)";
+      wrapper.style.transformOrigin = "top left";
+
+      html2canvas(document.getElementById("poster"), {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: null
+      }).then(canvas => {
+        wrapper.style.transform = originalTransform;
+        const link = document.createElement("a");
+        link.download = "poster.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+
+    async function saveData() {
+      const month = monthSelect.value;
+      const day = daySelect.value;
+      
+      if (!month || !day) {
+        showStatus("ദിവസവും മാസവും തിരഞ്ഞെടുക്കണം!", true);
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const data = {
+          hijri_month: month,
+          hijri_day: parseInt(day),
+          title1_content: document.getElementById('input1').value,
+          title2_content: document.getElementById('input2').value
+        };
+
+        const { error } = await supabaseClient
+          .from('poster_data')
+          .upsert(data, { 
+            onConflict: 'hijri_month,hijri_day',
+            ignoreDuplicates: false 
+          });
+
+        if (error) {
+          throw error;
+        }
+
+        showStatus("സേവ് ചെയ്തു ✅");
+      } catch (error) {
+        console.error('Save error:', error);
+        showStatus("സേവ് ചെയ്യുന്നതിൽ പിശക് സംഭവിച്ചു!", true);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    async function loadSavedData() {
+      const month = monthSelect.value;
+      const day = daySelect.value;
+      
+      if (!month || !day) return;
+
+      try {
+        const { data, error } = await supabaseClient
+          .from('poster_data')
+          .select('title1_content, title2_content')
+          .eq('hijri_month', month)
+          .eq('hijri_day', parseInt(day))
+          .single();
+
+        if (error && error.code !== 'PGRST116') { // PGRST116 is "not found" error
+          throw error;
+        }
+
+        if (data) {
+          document.getElementById('input1').value = data.title1_content || '';
+          document.getElementById('input2').value = data.title2_content || '';
+        } else {
+          document.getElementById('input1').value = '';
+          document.getElementById('input2').value = '';
+        }
+      } catch (error) {
+        console.error('Load error:', error);
+        showStatus("ഡാറ്റ ലോഡ് ചെയ്യുന്നതിൽ പിശക് സംഭവിച്ചു!", true);
+        // Clear inputs on error
+        document.getElementById('input1').value = '';
+        document.getElementById('input2').value = '';
+      }
+
+      updateAutoDate();
+      generatePoster();
+    }
+
+    async function deleteData() {
+      const month = monthSelect.value;
+      const day = daySelect.value;
+      
+      if (!month || !day) {
+        showStatus("ദിവസവും മാസവും തിരഞ്ഞെടുക്കണം!", true);
+        return;
+      }
+
+      if (!confirm("ഈ ഡാറ്റ ഡിലീറ്റ് ചെയ്യാൻ ശരിക്കും ആഗ്രഹിക്കുന്നുണ്ടോ?")) {
+        return;
+      }
+
+      try {
+        const { error } = await supabaseClient
+          .from('poster_data')
+          .delete()
+          .eq('hijri_month', month)
+          .eq('hijri_day', parseInt(day));
+
+        if (error) {
+          throw error;
+        }
+
+        document.getElementById('input1').value = '';
+        document.getElementById('input2').value = '';
+        generatePoster();
+        showStatus("ഡാറ്റ ഡിലീറ്റ് ചെയ്തു ✅");
+      } catch (error) {
+        console.error('Delete error:', error);
+        showStatus("ഡിലീറ്റ് ചെയ്യുന്നതിൽ പിശക് സംഭവിച്ചു!", true);
+      }
+    }
+
+    function updateAutoDate() {
+      const month = monthSelect.value;
+      const day = daySelect.value;
+      if (!month || !day) return;
+
+      const today = new Date();
+      const weekday = malayalamDays[today.getDay()];
+      const engDay = String(today.getDate()).padStart(2, '0');
+      const engMonth = malayalamMonths[today.getMonth()];
+      const engYear = today.getFullYear();
+
+      const fullDate = `1448 ${month} ${day.padStart(2, '0')} | ${weekday} | ${engYear} ${engMonth} ${engDay}`;
+      document.getElementById('input3').value = fullDate;
+    }
+
+    // Event listeners
+    ['input1', 'input2'].forEach(id => {
+      document.getElementById(id).addEventListener('input', generatePoster);
+    });
+
+    monthSelect.addEventListener('change', loadSavedData);
+    daySelect.addEventListener('change', loadSavedData);
+
+    // Initialize on page load
+    window.onload = () => {
+      generatePoster();
+      // Test Supabase connection
+      supabaseClient.from('poster_data').select('count').single()
+        .then(() => console.log('Supabase connected successfully'))
+        .catch(err => {
+          console.error('Supabase connection error:', err);
+          showStatus("ഡാറ്റാബേസ് കണക്ഷൻ പിശക്!", true);
+        });
+    };
+  </script>
+</body>
+</html>
+
+
+
