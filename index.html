@@ -515,8 +515,8 @@
             }
           }
 
-          // Direct WhatsApp Fallback to +91 9946667559 (without caption text)
-          window.open(`https://wa.me/${targetPhone}`, '_blank');
+          // Direct WhatsApp App Launch Protocol (opens WhatsApp app directly on mobile)
+          window.location.href = `whatsapp://send?phone=${targetPhone}`;
           showStatus("Opened WhatsApp! ✅");
         }, "image/png");
 
