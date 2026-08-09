@@ -110,14 +110,6 @@
       background-color: #00a843 !important;
     }
 
-    .btn-vivid-whatsapp {
-      background-color: #25d366 !important;
-      color: #ffffff !important;
-    }
-    .btn-vivid-whatsapp:hover {
-      background-color: #1eb954 !important;
-    }
-
     .btn-vivid-blue {
       background-color: #0066ff !important;
       color: #ffffff !important;
@@ -151,16 +143,16 @@
       </div>
 
       <!-- Hijri Month & Day Selector -->
-      <div class="mb-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="mb-5 grid grid-cols-2 gap-2.5 sm:gap-4">
         <div>
-          <label class="block font-bold text-slate-800 mb-1.5 text-sm">മാസം:</label>
-          <select id="monthSelect" class="w-full p-3 bg-white border-2 border-slate-300 text-slate-900 rounded-xl focus:border-blue-600 focus:outline-none transition-all cursor-pointer font-bold shadow-sm">
+          <label class="block font-bold text-slate-800 mb-1 text-xs sm:text-sm">മാസം:</label>
+          <select id="monthSelect" class="w-full px-2 sm:px-3 py-2.5 bg-white border-2 border-slate-300 text-slate-900 rounded-xl focus:border-blue-600 focus:outline-none transition-all cursor-pointer font-bold text-xs sm:text-sm shadow-sm truncate">
             <option disabled selected>മാസം തിരഞ്ഞെടുക്കുക</option>
           </select>
         </div>
         <div>
-          <label class="block font-bold text-slate-800 mb-1.5 text-sm">ദിവസം:</label>
-          <select id="daySelect" class="w-full p-3 bg-white border-2 border-slate-300 text-slate-900 rounded-xl focus:border-blue-600 focus:outline-none transition-all cursor-pointer font-bold shadow-sm">
+          <label class="block font-bold text-slate-800 mb-1 text-xs sm:text-sm">ദിവസം:</label>
+          <select id="daySelect" class="w-full px-2 sm:px-3 py-2.5 bg-white border-2 border-slate-300 text-slate-900 rounded-xl focus:border-blue-600 focus:outline-none transition-all cursor-pointer font-bold text-xs sm:text-sm shadow-sm truncate">
             <option disabled selected>ദിവസം തിരഞ്ഞെടുക്കുക</option>
             <option value="1">01</option>
             <option value="2">02</option>
@@ -200,11 +192,11 @@
       <div class="space-y-4 mb-6">
         <div>
           <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">Title 1 Content</label>
-          <textarea id="input1" rows="4" placeholder="Enter Title 1 Content" class="w-full p-3 bg-white border-2 border-slate-300 text-slate-900 rounded-xl focus:border-blue-600 focus:outline-none transition-all font-sans font-medium shadow-sm"></textarea>
+          <textarea id="input1" rows="2" placeholder="Enter Title 1 Content" class="w-full p-3 bg-white border-2 border-slate-300 text-slate-900 rounded-xl focus:border-blue-600 focus:outline-none transition-all font-sans font-medium shadow-sm overflow-hidden resize-none min-h-[90px]"></textarea>
         </div>
         <div>
           <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">Title 2 Content</label>
-          <textarea id="input2" rows="4" placeholder="Enter Title 2 Content" class="w-full p-3 bg-white border-2 border-slate-300 text-slate-900 rounded-xl focus:border-blue-600 focus:outline-none transition-all font-sans font-medium shadow-sm"></textarea>
+          <textarea id="input2" rows="2" placeholder="Enter Title 2 Content" class="w-full p-3 bg-white border-2 border-slate-300 text-slate-900 rounded-xl focus:border-blue-600 focus:outline-none transition-all font-sans font-medium shadow-sm overflow-hidden resize-none min-h-[90px]"></textarea>
         </div>
         <div>
           <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
@@ -213,43 +205,33 @@
             </svg>
             WhatsApp Numbers (Optional)
           </label>
-          <textarea id="inputWhatsapp" rows="3" placeholder="Enter WhatsApp numbers (one per line)" class="w-full p-3 bg-white border-2 border-slate-300 text-slate-900 rounded-xl focus:border-emerald-600 focus:outline-none transition-all font-sans font-medium shadow-sm"></textarea>
+          <textarea id="inputWhatsapp" rows="2" placeholder="Enter WhatsApp numbers (one per line)" class="w-full p-3 bg-white border-2 border-slate-300 text-slate-900 rounded-xl focus:border-emerald-600 focus:outline-none transition-all font-sans font-medium shadow-sm overflow-hidden resize-none min-h-[60px]"></textarea>
+          
+          <!-- Dynamic Separated Number Cards with Copy Option -->
+          <div id="whatsappList" class="mt-2.5 flex flex-wrap gap-2"></div>
         </div>
-        <div>
-          <label class="block text-xs font-black text-slate-700 uppercase tracking-wider mb-1.5">Generated Date String</label>
-          <textarea id="input3" rows="2" readonly class="w-full p-3 bg-slate-100 border-2 border-slate-300 text-slate-800 rounded-xl cursor-not-allowed font-bold shadow-inner"></textarea>
-        </div>
+        <!-- Hidden input for auto date string consumed by poster -->
+        <input type="hidden" id="input3" />
       </div>
 
       <!-- Action Buttons Grid -->
-      <div class="grid grid-cols-3 gap-2 pt-3 border-t-2 border-slate-200">
-        <button id="downloadBtn" onclick="downloadPoster()" class="w-full inline-flex items-center justify-center gap-1.5 btn-vivid-green font-black py-3.5 px-2 text-xs sm:text-sm rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-75 disabled:cursor-wait">
-          <svg id="downloadIcon" class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="grid grid-cols-2 gap-3 pt-3 border-t-2 border-slate-200">
+        <button id="downloadBtn" onclick="downloadPoster()" class="w-full inline-flex items-center justify-center gap-2 btn-vivid-green font-black py-3.5 px-3 text-sm sm:text-base rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-75 disabled:cursor-wait">
+          <svg id="downloadIcon" class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
           </svg>
-          <svg id="downloadSpinner" class="hidden animate-spin w-4 h-4 sm:w-5 sm:h-5 text-white shrink-0" fill="none" viewBox="0 0 24 24">
+          <svg id="downloadSpinner" class="hidden animate-spin w-5 h-5 text-white shrink-0" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
           <span id="downloadBtnText" class="truncate">Download</span>
         </button>
 
-        <button id="shareBtn" onclick="sharePoster()" class="w-full inline-flex items-center justify-center gap-1.5 btn-vivid-whatsapp font-black py-3.5 px-2 text-xs sm:text-sm rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-75 disabled:cursor-wait">
-          <svg id="shareIcon" class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.149-.174.198-.298.297-.497.099-.198.05-.372-.025-.521-.075-.149-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-          </svg>
-          <svg id="shareSpinner" class="hidden animate-spin w-4 h-4 sm:w-5 sm:h-5 text-white shrink-0" fill="none" viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          <span id="shareBtnText" class="truncate">Share</span>
-        </button>
-
-        <button id="saveBtn" onclick="saveData()" class="w-full inline-flex items-center justify-center gap-1.5 btn-vivid-blue font-black py-3.5 px-2 text-xs sm:text-sm rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-75 disabled:cursor-not-allowed">
-          <svg id="saveIcon" class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <button id="saveBtn" onclick="saveData()" class="w-full inline-flex items-center justify-center gap-2 btn-vivid-blue font-black py-3.5 px-3 text-sm sm:text-base rounded-xl shadow-lg transition-all active:scale-95 disabled:opacity-75 disabled:cursor-not-allowed">
+          <svg id="saveIcon" class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
           </svg>
-          <svg id="saveSpinner" class="hidden animate-spin w-4 h-4 sm:w-5 sm:h-5 text-white shrink-0" fill="none" viewBox="0 0 24 24">
+          <svg id="saveSpinner" class="hidden animate-spin w-5 h-5 text-white shrink-0" fill="none" viewBox="0 0 24 24">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
@@ -301,10 +283,6 @@
     const downloadBtnText = document.getElementById("downloadBtnText");
     const downloadIcon = document.getElementById("downloadIcon");
     const downloadSpinner = document.getElementById("downloadSpinner");
-    const shareBtn = document.getElementById("shareBtn");
-    const shareBtnText = document.getElementById("shareBtnText");
-    const shareIcon = document.getElementById("shareIcon");
-    const shareSpinner = document.getElementById("shareSpinner");
 
     hijriMonths.forEach(month => {
       const option = document.createElement("option");
@@ -346,19 +324,6 @@
         downloadIcon.classList.remove('hidden');
         downloadSpinner.classList.add('hidden');
         downloadBtnText.textContent = 'Download';
-      }
-    }
-
-    function setShareProgress(isSharing, progressText = "Share") {
-      shareBtn.disabled = isSharing;
-      if (isSharing) {
-        shareIcon.classList.add('hidden');
-        shareSpinner.classList.remove('hidden');
-        shareBtnText.textContent = progressText;
-      } else {
-        shareIcon.classList.remove('hidden');
-        shareSpinner.classList.add('hidden');
-        shareBtnText.textContent = 'Share';
       }
     }
 
@@ -404,27 +369,27 @@
       setTimeout(fitPosterPreview, 50);
     }
 
-    async function capturePosterCanvas() {
+    async function downloadPoster() {
       const wrapper = document.getElementById("posterScalePreview");
       const previewWrapper = document.getElementById("posterPreviewWrapper");
-      const posterEl = document.getElementById("poster");
-
-      // Save original styles
       const originalTransform = wrapper.style.transform;
       const originalWrapperHeight = previewWrapper.style.height;
 
-      try {
-        // Temporarily unclip wrapper so mobile viewport width doesn't force text wrapping
-        previewWrapper.style.overflow = "visible";
-        wrapper.style.transform = "scale(1)";
-        wrapper.style.transformOrigin = "top left";
-        previewWrapper.style.height = `${posterEl.offsetHeight}px`;
+      setDownloadProgress(true, "Preparing...");
 
-        // Ensure Malayalam fonts & layout reflow at 2700px width before html2canvas
+      try {
         if (document.fonts) {
+          setDownloadProgress(true, "Loading fonts...");
           await document.fonts.ready;
         }
-        await new Promise(resolve => setTimeout(resolve, 120));
+
+        setDownloadProgress(true, "Rendering...");
+
+        wrapper.style.transform = "scale(1)";
+        wrapper.style.transformOrigin = "top left";
+
+        const posterEl = document.getElementById("poster");
+        previewWrapper.style.height = `${posterEl.offsetHeight}px`;
 
         window.scrollTo(0, 0);
 
@@ -432,29 +397,17 @@
           scale: 2,
           useCORS: true,
           backgroundColor: null,
-          width: 2700,
+          width: posterEl.offsetWidth,
           height: posterEl.offsetHeight,
           windowWidth: 2700,
           scrollX: 0,
           scrollY: 0
         });
 
-        return canvas;
-      } finally {
-        // Always restore mobile preview scale
         wrapper.style.transform = originalTransform;
         previewWrapper.style.height = originalWrapperHeight;
-        previewWrapper.style.overflow = "hidden";
         fitPosterPreview();
-      }
-    }
 
-    async function downloadPoster() {
-      setDownloadProgress(true, "Preparing...");
-
-      try {
-        setDownloadProgress(true, "Rendering...");
-        const canvas = await capturePosterCanvas();
         setDownloadProgress(true, "Downloading...");
 
         canvas.toBlob((blob) => {
@@ -477,38 +430,13 @@
         }, "image/png");
 
       } catch (err) {
+        wrapper.style.transform = originalTransform;
+        previewWrapper.style.height = originalWrapperHeight;
+        fitPosterPreview();
+
         setDownloadProgress(false);
         console.error("Download error:", err);
         showStatus("Download failed!", true);
-      }
-    }
-
-    async function sharePoster() {
-      setShareProgress(true, "Preparing...");
-
-      try {
-        setShareProgress(true, "Rendering...");
-        const canvas = await capturePosterCanvas();
-        setShareProgress(true, "Sharing...");
-
-        canvas.toBlob(async (blob) => {
-          setShareProgress(false);
-          if (!blob) {
-            showStatus("Failed to create image!", true);
-            return;
-          }
-
-          const targetPhone = "919946667559";
-
-          // Bypass phone share selection menu and launch WhatsApp App directly
-          window.location.href = `whatsapp://send?phone=${targetPhone}`;
-          showStatus("Opened WhatsApp! ✅");
-        }, "image/png");
-
-      } catch (err) {
-        setShareProgress(false);
-        console.error("Share error:", err);
-        showStatus("Share failed!", true);
       }
     }
 
@@ -552,6 +480,78 @@
       }
     }
 
+    function renderWhatsappList() {
+      const container = document.getElementById("whatsappList");
+      const whatsappInput = document.getElementById("inputWhatsapp");
+      if (!container || !whatsappInput) return;
+
+      const rawText = whatsappInput.value;
+      const numbers = rawText
+        .split(/\r?\n|,/)
+        .map(n => n.trim())
+        .filter(n => n.length > 0);
+
+      if (numbers.length === 0) {
+        container.innerHTML = "";
+        return;
+      }
+
+      container.innerHTML = numbers.map(num => `
+        <div class="inline-flex items-center gap-2 bg-emerald-50 border-2 border-emerald-500 text-emerald-900 font-bold px-3 py-1.5 rounded-xl text-xs sm:text-sm shadow-sm">
+          <span>${num}</span>
+          <button onclick="copyNumber('${num}', this)" type="button" class="p-1 hover:bg-emerald-200 rounded-lg text-emerald-700 transition-all active:scale-90 flex items-center justify-center gap-1 cursor-pointer" title="Copy Number">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+            <span class="text-[10px] font-black uppercase tracking-wider">Copy</span>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function copyNumber(num, btn) {
+      const showCopied = () => {
+        btn.innerHTML = `<span class="text-[10px] font-black text-emerald-800">Copied! ✅</span>`;
+        setTimeout(() => renderWhatsappList(), 1500);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(num).then(showCopied).catch(() => {
+          fallbackCopy(num, showCopied);
+        });
+      } else {
+        fallbackCopy(num, showCopied);
+      }
+    }
+
+    function fallbackCopy(num, callback) {
+      const textArea = document.createElement("textarea");
+      textArea.value = num;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand("copy");
+        if (callback) callback();
+      } catch (err) {
+        console.error('Fallback copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    }
+
+    function autoResizeTextarea(el) {
+      if (!el) return;
+      el.style.height = 'auto';
+      el.style.height = Math.max(el.scrollHeight, 60) + 'px';
+    }
+
+    function autoResizeAllTextareas() {
+      ['input1', 'input2', 'inputWhatsapp'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) autoResizeTextarea(el);
+      });
+      renderWhatsappList();
+    }
+
     async function loadSavedData() {
       const month = monthSelect.value;
       const day = daySelect.value;
@@ -585,6 +585,8 @@
 
       updateAutoDate();
       generatePoster();
+      autoResizeAllTextareas();
+      renderWhatsappList();
     }
 
     async function deleteData() {
@@ -613,7 +615,9 @@
 
         document.getElementById('input1').value = '';
         document.getElementById('input2').value = '';
+        document.getElementById('inputWhatsapp').value = '';
         generatePoster();
+        autoResizeAllTextareas();
         showStatus("Deleted successfully! ✅");
       } catch (error) {
         console.error('Delete error:', error);
@@ -637,8 +641,15 @@
     }
 
     // Event listeners
-    ['input1', 'input2'].forEach(id => {
-      document.getElementById(id).addEventListener('input', generatePoster);
+    ['input1', 'input2', 'inputWhatsapp'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => {
+          autoResizeTextarea(el);
+          generatePoster();
+          if (id === 'inputWhatsapp') renderWhatsappList();
+        });
+      }
     });
 
     monthSelect.addEventListener('change', loadSavedData);
@@ -649,6 +660,7 @@
     window.onload = () => {
       generatePoster();
       fitPosterPreview();
+      autoResizeAllTextareas();
 
       // Ensure fit after background and poster images load
       document.querySelectorAll('#poster img').forEach(img => {
